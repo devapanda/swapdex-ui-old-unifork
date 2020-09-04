@@ -34,7 +34,19 @@ repository.
 Already installed just run development
 ```
 
-### Run
+### build
+```bash
+yarn build
+```
+### Serve
+```bash
+yarn global add serve && serve -s build
+or
+npx serve -s build
+```
+
+
+### Run optional
 
 ```bash
 yarn start
