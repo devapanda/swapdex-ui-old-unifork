@@ -1,6 +1,6 @@
 # Uniswap Interface
 
-[![Tests](https://github.com/Uniswap/uniswap-interface/workflows/Tests/badge.svg)](https://github.com/Uniswap/uniswap-interface/actions?query=workflow%3ATests)
+[![Tests](https://github.com/devapanda/swapdex-ui/workflows/Tests/badge.svg)](https://github.com/devapanda/swapdex-/actions?query=workflow%3ATests)
 [![Styled With Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
 An open source interface for Uniswap -- a protocol for decentralized exchange of Ethereum tokens.
@@ -31,7 +31,7 @@ repository.
 ### Install Dependencies
 
 ```bash
-yarn
+Already installed just run development
 ```
 
 ### Run
