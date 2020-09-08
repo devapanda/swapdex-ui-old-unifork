@@ -5,33 +5,26 @@ import { Text } from 'rebass'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/svg/logo.svg'
-import LogoDark from '../../assets/svg/logo_white.svg'
-import Wordmark from '../../assets/svg/wordmark.svg'
-import WordmarkDark from '../../assets/svg/wordmark_white.svg'
+import Logo from '../../assets/images/swapdex-logo.png'
+import LogoMobile from '../../assets/images/swapdex-mobile-logo.png'
 import { useActiveWeb3React } from '../../hooks'
-import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
-import Menu from '../Menu'
 
-import Row, { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
-import VersionSwitch from './VersionSwitch'
 
 const HeaderFrame = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: column;
-  width: 100%;
-  top: 0;
-  position: absolute;
-  z-index: 2;
+  flex-direction: row;
+  width: 100%;  
+  height: 4em;
+  padding: 0 10px;
+  background-color: #483d8b;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 12px 0 0 0;
     width: calc(100%);
     position: relative;
   `};
@@ -45,10 +38,6 @@ const HeaderElement = styled.div`
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-top: 0.5rem;
-`};
 `
 
 const Title = styled.a`
@@ -59,14 +48,6 @@ const Title = styled.a`
   :hover {
     cursor: pointer;
   }
-`
-
-const TitleText = styled(Row)`
-  width: fit-content;
-  white-space: nowrap;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none;
-  `};
 `
 
 const AccountElement = styled.div<{ active: boolean }>`
@@ -98,13 +79,17 @@ const NetworkCard = styled(YellowCard)`
 `
 
 const UniIcon = styled.div`
+  img { 
+    max-width: 226px;
+  }
+  
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
   }
   ${({ theme }) => theme.mediaWidth.upToSmall`
     img { 
-      width: 4.5rem;
+      max-width: 2em;
     }
   `};
 `
@@ -115,8 +100,9 @@ const HeaderControls = styled.div`
   align-items: center;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
+    justify-content: flex-end;
   `};
 `
 
@@ -138,42 +124,34 @@ export default function Header() {
   const { account, chainId } = useActiveWeb3React()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-  const [isDark] = useDarkModeManager()
 
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
+      <HeaderElement>
+        <Title href=".">
+          <UniIcon>
+            <img src={!isMobile ? Logo : LogoMobile} alt="logo"/>
+          </UniIcon>
+        </Title>
+      </HeaderElement>
+      <HeaderControls style={!isMobile ? { width: 'auto' } : { width: '100%' }}>
         <HeaderElement>
-          <Title href=".">
-            <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
-            </UniIcon>
-            <TitleText>
-              <img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" />
-            </TitleText>
-          </Title>
+          <TestnetWrapper>
+            {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+          </TestnetWrapper>
+          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+            {account && userEthBalance ? (
+              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+                {userEthBalance?.toSignificant(4)} ETH
+              </BalanceText>
+            ) : null}
+            <Web3Status />
+          </AccountElement>
         </HeaderElement>
-        <HeaderControls>
-          <HeaderElement>
-            <TestnetWrapper>
-              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
-            </TestnetWrapper>
-            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
-                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
-                </BalanceText>
-              ) : null}
-              <Web3Status />
-            </AccountElement>
-          </HeaderElement>
-          <HeaderElementWrap>
-            <VersionSwitch />
-            <Settings />
-            <Menu />
-          </HeaderElementWrap>
-        </HeaderControls>
-      </RowBetween>
+        <HeaderElementWrap>
+          <Settings />
+        </HeaderElementWrap>
+      </HeaderControls>
     </HeaderFrame>
   )
 }
