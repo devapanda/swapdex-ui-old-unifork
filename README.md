@@ -20,6 +20,11 @@ To access the Uniswap Interface, use an IPFS gateway link from the
 [latest release](https://github.com/Uniswap/uniswap-interface/releases/latest), 
 or visit [app.uniswap.org](https://app.uniswap.org).
 
+## Swapdex Factory and Router
+
+'0xeBeb714456167154b874C1afA13F1cD98202E38A', // v2 Swapdex Factory
+  '0xc338753A517c6f12F15626Bfd2bdd745f9A1Ad78' // v2 Swapdex Router 02
+
 ## Listing a token
 
 Please see the
